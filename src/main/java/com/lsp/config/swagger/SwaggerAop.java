@@ -2,6 +2,7 @@ package com.lsp.config.swagger;
 
 import io.swagger.models.Model;
 import io.swagger.models.ModelImpl;
+import io.swagger.models.Swagger;
 import io.swagger.models.properties.Property;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -15,17 +16,16 @@ import java.util.Map;
 @Component
 public class SwaggerAop {
 
-
-
-    @Pointcut(value = "execution(public * springfox.documentation.swagger2.mappers.ModelMapper.mapModels(..))")
+    @Pointcut(value = "execution(public * springfox.documentation.swagger2.mappers.ServiceModelToSwagger2MapperImpl.mapDocumentation(..))")
     public void point(){
 
     }
 
     @Around("point()")
     public Object around(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+        Swagger swagger = (Swagger) proceedingJoinPoint.proceed();
 
-        Map<String, Model> returnValue = (Map<String, Model>) proceedingJoinPoint.proceed();
+        Map<String, Model> returnValue = swagger.getDefinitions() ;
 
         returnValue.putAll(ModelCache.extra_cache);
 
@@ -60,7 +60,7 @@ public class SwaggerAop {
 
         });
 
-        return returnValue;
+        return swagger;
     }
 
 }

@@ -1,7 +1,9 @@
 package com.lsp.controller;
 
+import com.lsp.config.swagger.ApiResponseFields;
 import com.lsp.config.swagger.ApiResponseObject;
 import com.lsp.config.swagger.ApiResponseProperty;
+import com.lsp.entity.Person;
 import io.swagger.annotations.*;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
@@ -14,6 +16,19 @@ import java.util.Map;
 @RestController
 @Api(description = "用户接口")
 public class IController {
+
+    /**
+     * 查看用户详情
+     * @param id 用户id
+     * @return 用户信息
+     */
+    @GetMapping("/select/{id}")
+    @ApiOperation(value = "查看用户详情",notes = "使用说明")
+    @ApiResponseFields(fields = {"id","first_name"})
+    public Person select(@ApiParam(name="用户id") @PathVariable int id){
+        return null;
+    }
+
 
     @PutMapping("/put/{id}")
     @ApiOperation(value = "更新用户信息",notes = "使用说明")
